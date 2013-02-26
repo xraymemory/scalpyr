@@ -13,7 +13,7 @@ setup(
     author="Michael Anzuoni",
     author_email="me.anzuoni@gmail.com",
     install_requires=['json==2.0.9', 'requests==1.1.0'],
-    packages=['link', ],
+    packages=['scalpyr', ],
     license="MIT",
     long_description="")
 
