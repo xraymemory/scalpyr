@@ -13,10 +13,10 @@ It'll be on pip soon...
 
 #Start scalping!
 ```python
-from scalpyr import scalpyr
-seatgeek_info = Scalpyr()
+from scalpyr import Scalpyr
+seatgeek = Scalpyr()
 request_args = {"venue.city": "NY"}
-events = seatgeek_info.get_events(request_args)
+events = seatgeek.get_events(request_args)
 ...
 ```
 
