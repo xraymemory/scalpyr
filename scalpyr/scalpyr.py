@@ -24,9 +24,17 @@ class Scalpyr(object):
     def get_recommendations(self, req_args=None):
         return self._send_request("recommendations", req_args, None)
 
-    def get_tickets(self, json_response):
-        ticket_urls = map(lambda x: x['url'], json_response['events'])
-        event_titles = map(lambda x: x['title'], json_response['events'])
+    def get_tickets(self, ticket_type, json_response):
+        if ticket_type == "event":
+            return self._get_event_tickets(json_response)
+        elif ticket_type == "performer":
+            pass
+        elif ticket_type == "venue":
+            pass
+
+    def _get_event_tickets(self, response):
+        ticket_urls = map(lambda x: x['url'], response['events'])
+        event_titles = map(lambda x: x['title'], response['events'])
         ticket_dict = {}
         for index in range(len(ticket_urls)):
             print ticket_urls[index]
@@ -41,7 +49,6 @@ class Scalpyr(object):
         sg_base = "http://www.seatgeek.com"
         links = [sg_base + a['href'] for a in soup.findAll('a', attrs={'class': 'ticket-button'})]
         return links
-
 
     def _send_request(self, req_type=None, req_args=None, req_id=None):
         request_string = self.base_url + "{0}/".format(req_type)
