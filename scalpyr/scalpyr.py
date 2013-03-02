@@ -1,5 +1,6 @@
 import json
 import requests
+from BeautifulSoup import BeautifulSoup
 
 
 class Scalpyr(object):
@@ -22,6 +23,25 @@ class Scalpyr(object):
 
     def get_recommendations(self, req_args=None):
         return self._send_request("recommendations", req_args, None)
+
+    def get_tickets(self, json_response):
+        ticket_urls = map(lambda x: x['url'], json_response['events'])
+        event_titles = map(lambda x: x['title'], json_response['events'])
+        ticket_dict = {}
+        for index in range(len(ticket_urls)):
+            print ticket_urls[index]
+            r = requests.get(ticket_urls[index])
+            soup = BeautifulSoup(r.text)
+            external_tickets = [a['href'] for a in soup.findAll('a', attrs={'class': 'select btn'})]
+            ticket_dict[event_titles[index]] = external_tickets
+        return ticket_dict
+
+    def _get_ticket_button_urls(self, response):
+        soup = BeautifulSoup(response)
+        sg_base = "http://www.seatgeek.com"
+        links = [sg_base + a['href'] for a in soup.findAll('a', attrs={'class': 'ticket-button'})]
+        return links
+
 
     def _send_request(self, req_type=None, req_args=None, req_id=None):
         request_string = self.base_url + "{0}/".format(req_type)
