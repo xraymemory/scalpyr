@@ -19,7 +19,7 @@ events = seatgeek.get_events(request_args)
 ```
 
 #TODO
-+ Add functionality to access tickets
++ Add docstrings and more examples
 + Add module to pip
 
 Author: Michael Anzuoni [tangents.co](http://tangents.co)
