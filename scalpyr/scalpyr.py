@@ -113,8 +113,8 @@ class Scalpyr(object):
             '''
             When querying a venue page you must disambiguate since it consists
             of a table of dates with links to the specific performance.
-            This information is returned as a tuple with the relevant info 
-            since a JSON response for a venue doesn't contain specific 
+            This information is returned as a tuple with the relevant info
+            since a JSON response for a venue doesn't contain specific
             event or ticketing info.
             '''
             dates = [div.text for div in soup.findAll('div', attrs={'class': 'time'})]
@@ -132,7 +132,7 @@ class Scalpyr(object):
             request_string = request_string + "?"
             for k, v in req_args.iteritems():
                 request_string = request_string + "{0}={1}&".format(k, v)
-            if self.dev_key != None:
+            if self.dev_key is not None:
                 request_string = request_string + "client_id={0}".format(self.dev_key)
         elif req_type == "taxonomies":
             request_string = request_string + "taxnonomies"
