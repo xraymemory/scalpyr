@@ -9,7 +9,7 @@ cd scalpyr
 python setup.py install
 ```
 
-#Start scalping!
+#Get event info!
 ```python
 from scalpyr import Scalpyr
 seatgeek = Scalpyr()
