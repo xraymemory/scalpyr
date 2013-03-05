@@ -30,7 +30,7 @@ class Scalpyr(object):
         elif ticket_type == "performer":
             return self._get_performer_tickets(json_response)
         elif ticket_type == "venue":
-            pass
+            return self._get_venue_tickets(json_response)
 
     def _get_event_tickets(self, response):
         ticket_urls = map(lambda x: x['url'], response['events'])
@@ -38,11 +38,8 @@ class Scalpyr(object):
         tickets = []
         for index in range(len(ticket_urls)):
             event_dict = {}
-            r = requests.get(ticket_urls[index])
-            soup = BeautifulSoup(r.text)
-            external_tickets = [a['href'] for a in soup.findAll('a', attrs={'class': 'select btn'})]
             event_dict["event"] = event_titles[index]
-            event_dict["tickets"] = external_tickets
+            event_dict["tickets"] = self._return_ticket_urls(ticket_urls[index])
             tickets.append(event_dict)
         return tickets
 
@@ -52,22 +49,40 @@ class Scalpyr(object):
         tickets = []
         for index in range(len(ticket_urls)):
             perf_dict = {}
-            performer_list = []
+            performer_tickets = []
             button_urls = self._get_ticket_button_urls(ticket_urls[index])
             for url in button_urls:
-                r = requests.get(ticket_urls[index])
-                soup = BeautifulSoup(r.text)
-                external_tickets = [a['href'] for a in soup.findAll('a', attrs={'class': 'select btn'})]
-                performer_list.extend(external_tickets)
+                performer_tickets.extend(self._return_ticket_urls(url))
             perf_dict["performer"] = performer_name[index]
-            perf_dict["tickets"] = external_tickets
+            perf_dict["tickets"] = performer_tickets
             tickets.append(perf_dict)
         return tickets
 
-    def _get_ticket_button_urls(self, response):
+    def _get_venue_tickets(self, response):
+        tickets = []
+        links, dates, names = self._get_ticket_button_urls(response['url'], is_venue=True)
+        for index in range(len(names)):
+            venue_item = {}
+            venue_item["name"] = names[index]
+            venue_item["date"] = dates[index]
+            venue_item["tickets"] = self._return_ticket_urls(links[index])
+            tickets.append(venue_item)
+        return tickets
+
+    def _return_ticket_urls(self, sg_url):
+        r = requests.get(sg_url)
+        soup = BeautifulSoup(r.text)
+        external_tickets = [a['href'] for a in soup.findAll('a', attrs={'class': 'select btn'})]
+        return external_tickets
+
+    def _get_ticket_button_urls(self, response, is_venue=False):
         soup = BeautifulSoup(response)
         sg_base = "http://www.seatgeek.com"
         links = [sg_base + a['href'] for a in soup.findAll('a', attrs={'class': 'ticket-button'})]
+        if is_venue:
+            dates = [div.text for div in soup.findAll('div', attrs={'class': 'time'})]
+            names = [span.txt for span in soup.findAll('span', attrs={'span': 'itemprop'})]
+            return links, dates, names
         return links
 
     def _send_request(self, req_type=None, req_args=None, req_id=None):
@@ -86,5 +101,3 @@ class Scalpyr(object):
         response = requests.get(request_string)
         dict_result = json.loads(response.text)
         return dict_result
-
-
