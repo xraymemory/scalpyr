@@ -9,8 +9,6 @@ cd scalpyr
 python setup.py install
 ```
 
-It'll be on pip soon...
-
 #Start scalping!
 ```python
 from scalpyr import Scalpyr
@@ -22,5 +20,6 @@ events = seatgeek.get_events(request_args)
 
 #TODO
 + Add functionality to access tickets
++ Add module to pip
 
 Author: Michael Anzuoni [tangents.co](http://tangents.co)
