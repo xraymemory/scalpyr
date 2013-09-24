@@ -12,7 +12,7 @@ setup(
     url="https://github.com/yolesaber/scalpyr",
     author="Michael Anzuoni",
     author_email="me.anzuoni@gmail.com",
-    install_requires=['json==2.0.9', 'requests==1.1.0'],
+    install_requires=['anyjson==0.3.3', 'requests==1.1.0', 'beautifulsoup4==4.3.1'],
     packages=['scalpyr', ],
     license="MIT",
     long_description="")

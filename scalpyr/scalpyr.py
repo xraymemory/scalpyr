@@ -1,6 +1,6 @@
-import json
+import anyjson as json
 import requests
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 
 class Scalpyr(object):
