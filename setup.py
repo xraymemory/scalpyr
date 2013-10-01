@@ -15,6 +15,8 @@ setup(
     install_requires=['anyjson==0.3.3', 'requests==1.1.0', 'beautifulsoup4==4.3.1'],
     packages=['scalpyr', ],
     license="MIT",
-    long_description="")
+    long_description="",
+    download_url='https://github.com/spothero/scalpyr/tarball/0.0.1',
+    keywords=['api', 'SeatGeek'])
 
 
