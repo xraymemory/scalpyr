@@ -127,7 +127,6 @@ class Scalpyr(object):
     def _send_request(self, req_type=None, req_args=None, req_id=None):
         """ Send a request to the SeatGeek API using requests """
         request_string = self.base_url + "{0}/".format(req_type)
-        dict_result = {}
         if req_id:
             request_string += "{0}".format(req_id)
         elif req_args:
